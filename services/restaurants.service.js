@@ -3,6 +3,7 @@ const { faker } = require('@faker-js/faker');
 class RestaurantServices {
     constructor() {
         this.restaurants = [];
+        this.reservations = [];
         this.generate();
     }
 
@@ -14,7 +15,10 @@ class RestaurantServices {
                 description: faker.company.catchPhrase(),
                 city: faker.address.city(),
                 image: faker.image.food(),
-                tables: 15,
+                tables: {
+                    available: 15,
+                    reserved: 0,
+                },
             });
         }
     }
@@ -30,8 +34,11 @@ class RestaurantServices {
 
         this.restaurants.push({
             id: faker.database.mongodbObjectId(),
-            tables: 15,
             ...body,
+            tables: {
+                available: 15,
+                reserved: 0,
+            },
         });
         return {
             message: 'Crested restaurant',
@@ -87,6 +94,7 @@ class RestaurantServices {
         };
         return restaurant;
     }
+
     delete(id) {
         const restaurantDeleted = this.findOne(id);
         const newListOfRestaurants = this.restaurants.filter(
@@ -94,6 +102,31 @@ class RestaurantServices {
         );
         this.restaurants = newListOfRestaurants;
         return restaurantDeleted;
+    }
+
+    // RESERVATIONS
+    createReservation(id) {
+        const restaurant = this.findOne(id);
+        const tablesAvailable = restaurant.tables.available;
+        const tablesReserved = restaurant.tables.reserved;
+        // console.log(tablesAvailable, tablesReserved);
+
+        const reservation = {
+            id: faker.database.mongodbObjectId(),
+            name: restaurant.name,
+            city: restaurant.city,
+            date: new Date(),
+        };
+
+        this.reservations.push(reservation);
+        const updateRestaurant = this.update(id, {
+            tables: {
+                available: tablesAvailable - 1,
+                reserved: tablesReserved + 1,
+            },
+        });
+        return updateRestaurant;
+        // return updateRestaurant;
     }
 }
 module.exports = RestaurantServices;

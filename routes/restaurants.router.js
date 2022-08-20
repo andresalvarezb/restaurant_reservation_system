@@ -24,8 +24,14 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
-    const data = service.findOne(id);
-    res.status(200).json(data);
+    const { reservation } = req.query;
+    if (reservation) {
+        const data = service.createReservation(id);
+        res.status(200).json(data);
+    } else {
+        const data = service.findOne(id);
+        res.status(200).json(data);
+    }
 });
 
 router.patch('/:id', (req, res) => {
