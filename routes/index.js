@@ -6,7 +6,7 @@ function routesAPI(app) {
     const router = express.Router();
     app.use(baseURL, router);
 
-    router.use('restaurants', restaurantsRouter);
+    router.use('/restaurants', restaurantsRouter);
 }
 
 module.exports = routesAPI;
