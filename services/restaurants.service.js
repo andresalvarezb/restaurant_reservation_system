@@ -64,6 +64,13 @@ class RestaurantServices {
         };
         return restaurant;
     }
-    delete() {}
+    delete(id) {
+        const restaurantDeleted = this.findOne(id);
+        const newListOfRestaurants = this.restaurants.filter(
+            (restaurant) => restaurant.id !== id
+        );
+        this.restaurants = newListOfRestaurants;
+        return restaurantDeleted;
+    }
 }
 module.exports = RestaurantServices;

@@ -31,4 +31,10 @@ router.patch('/:id', (req, res) => {
     res.status(200).json(data);
 });
 
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    const data = service.delete(id);
+    res.status(200).send(`Delete restaurant ${data.name}`);
+});
+
 module.exports = router;
