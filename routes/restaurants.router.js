@@ -4,7 +4,7 @@ const { faker } = require('@faker-js/faker');
 
 router.get('/', (req, res) => {
     const restaurants = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         restaurants.push({
             id: faker.database.mongodbObjectId(),
             name: faker.company.name(),
@@ -15,6 +15,14 @@ router.get('/', (req, res) => {
         });
     }
     res.json(restaurants);
+});
+
+router.post('/', (req, res) => {
+    const { body } = req;
+    res.json({
+        message: 'created',
+        data: body,
+    });
 });
 
 module.exports = router;
