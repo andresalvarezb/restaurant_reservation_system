@@ -21,4 +21,14 @@ router.get('/:id', (req, res) => {
     res.status(200).json(data);
 });
 
+router.patch('/:id', (req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+    const data = service.update(id, body);
+    if (data.index) {
+        res.status(404).json(data.message);
+    }
+    res.status(200).json(data);
+});
+
 module.exports = router;

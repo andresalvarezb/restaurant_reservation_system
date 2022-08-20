@@ -47,7 +47,23 @@ class RestaurantServices {
         return this.restaurants.find((restaurant) => restaurant.id === id);
     }
 
-    update() {}
+    update(id, body) {
+        const index = this.restaurants.findIndex(
+            (restaurant) => restaurant.id === id
+        );
+        if (index === -1) {
+            return {
+                message: 'Restaurant not found',
+                index,
+            };
+        }
+        const restaurant = this.restaurants[index];
+        this.restaurants[index] = {
+            ...restaurant,
+            ...body,
+        };
+        return restaurant;
+    }
     delete() {}
 }
 module.exports = RestaurantServices;
