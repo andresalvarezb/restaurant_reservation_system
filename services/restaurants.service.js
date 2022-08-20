@@ -42,6 +42,11 @@ class RestaurantServices {
     find() {
         return this.restaurants;
     }
+
+    findOne(id) {
+        return this.restaurants.find((restaurant) => restaurant.id === id);
+    }
+
     update() {}
     delete() {}
 }
