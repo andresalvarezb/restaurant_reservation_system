@@ -19,7 +19,26 @@ class RestaurantServices {
         }
     }
 
-    create() {}
+    create(body) {
+        /**
+         * ! validate data with JOI
+         *  name
+         * description
+         * city
+         * url image
+         */
+
+        this.restaurants.push({
+            id: faker.database.mongodbObjectId(),
+            tables: 15,
+            ...body,
+        });
+        return {
+            message: 'Crested restaurant',
+            data: body,
+        };
+    }
+
     find() {
         return this.restaurants;
     }
