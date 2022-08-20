@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const RestaurantServices = require('../services/restaurants.service');
+const isEmptyObject = require('../utils/isEmptyObject');
 const service = new RestaurantServices();
 
 router.post('/', (req, res) => {
@@ -11,8 +12,14 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    const data = service.find();
-    res.status(200).json(data);
+    if (isEmptyObject(req.query)) {
+        const data = service.find();
+        res.status(200).json(data);
+    } else {
+        const data = service.filter(req.query);
+        // if happen a error, this status code should change
+        res.status(200).json(data);
+    }
 });
 
 router.get('/:id', (req, res) => {

@@ -7,12 +7,12 @@ class RestaurantServices {
     }
 
     generate() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             this.restaurants.push({
                 id: faker.database.mongodbObjectId(),
                 name: faker.company.name(),
                 description: faker.company.catchPhrase(),
-                address: `${faker.address.city()}, ${faker.address.secondaryAddress()} in ${faker.address.street()}`,
+                city: faker.address.city(),
                 image: faker.image.food(),
                 tables: 15,
             });
@@ -45,6 +45,29 @@ class RestaurantServices {
 
     findOne(id) {
         return this.restaurants.find((restaurant) => restaurant.id === id);
+    }
+
+    filter(query) {
+        const { city } = query;
+        if (city) {
+            return this.restaurants
+                .filter((restaurant) => restaurant.city === city)
+                .sort((a, b) => {
+                    const nameA = a.name[0].toLowerCase();
+                    const nameB = b.name[0].toLowerCase();
+                    if (nameA == nameB) {
+                        return 0;
+                    }
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    return 1;
+                });
+        } else {
+            return {
+                message: 'error query unknown',
+            };
+        }
     }
 
     update(id, body) {
