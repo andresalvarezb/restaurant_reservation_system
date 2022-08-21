@@ -1,22 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const RestaurantServices = require('../services/restaurants.service');
 const isEmptyObject = require('../utils/isEmptyObject');
-const service = new RestaurantServices();
+const restaurantService = require('../services/restaurants.service');
+// const restaurantService = new RestaurantServices();
+const ReservationService = require('../services/reservations.service');
+const reservationService = new ReservationService();
 
 router.post('/', (req, res) => {
     const { body } = req;
-    const data = service.create(body);
+    const data = restaurantService.create(body);
     res.status(201).json(data);
 });
 
 router.get('/', (req, res) => {
     if (isEmptyObject(req.query)) {
-        const data = service.find();
+        const data = restaurantService.find();
         res.status(200).json(data);
     } else {
-        const data = service.filter(req.query);
+        const data = restaurantService.filter(req.query);
         // if happen a error, this status code should change
         res.status(200).json(data);
     }
@@ -26,10 +28,10 @@ router.get('/:id', (req, res) => {
     const { id } = req.params;
     const { reservation } = req.query;
     if (reservation) {
-        const data = service.createReservation(id);
+        const data = reservationService.create(id);
         res.status(200).json(data);
     } else {
-        const data = service.findOne(id);
+        const data = restaurantService.findOne(id);
         res.status(200).json(data);
     }
 });
@@ -37,7 +39,7 @@ router.get('/:id', (req, res) => {
 router.patch('/:id', (req, res) => {
     const { id } = req.params;
     const body = req.body;
-    const data = service.update(id, body);
+    const data = restaurantService.update(id, body);
     if (data.index) {
         res.status(404).json(data.message);
     }
@@ -46,7 +48,7 @@ router.patch('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    const data = service.delete(id);
+    const data = restaurantService.delete(id);
     res.status(200).send(`Delete restaurant ${data.name}`);
 });
 
