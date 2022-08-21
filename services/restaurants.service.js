@@ -1,9 +1,7 @@
 const { faker } = require('@faker-js/faker');
-
 class RestaurantServices {
     constructor() {
         this.restaurants = [];
-        this.reservations = [];
         this.generate();
     }
 
@@ -103,30 +101,6 @@ class RestaurantServices {
         this.restaurants = newListOfRestaurants;
         return restaurantDeleted;
     }
-
-    // RESERVATIONS
-    createReservation(id) {
-        const restaurant = this.findOne(id);
-        const tablesAvailable = restaurant.tables.available;
-        const tablesReserved = restaurant.tables.reserved;
-        // console.log(tablesAvailable, tablesReserved);
-
-        const reservation = {
-            id: faker.database.mongodbObjectId(),
-            name: restaurant.name,
-            city: restaurant.city,
-            date: new Date(),
-        };
-
-        this.reservations.push(reservation);
-        const updateRestaurant = this.update(id, {
-            tables: {
-                available: tablesAvailable - 1,
-                reserved: tablesReserved + 1,
-            },
-        });
-        return updateRestaurant;
-        // return updateRestaurant;
-    }
 }
-module.exports = RestaurantServices;
+
+module.exports = new RestaurantServices();
