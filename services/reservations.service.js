@@ -19,6 +19,18 @@ class ReservationService {
         };
 
         this.reservations.push(reservation);
+
+        if (this.reservations.length > 20) {
+            throw Error(
+                " You can't do more reservations. 20 is the limit for day"
+            );
+        }
+
+        if (restaurant.tables.reserved === 15) {
+            throw Error(
+                " You can't do more reservations. 15 is the limit for day in this restaurant"
+            );
+        }
         const updateRestaurant = restaurantService.update(id, {
             tables: {
                 available: tablesAvailable - 1,
@@ -29,7 +41,6 @@ class ReservationService {
     }
 
     find() {
-        console.log(this.reservations);
         return this.reservations;
     }
 }
