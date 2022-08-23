@@ -1,7 +1,6 @@
 const express = require('express');
-const ReservationService = require('../services/reservations.service');
+const reservationService = require('../services/reservations.service');
 const router = express.Router();
-const reservationService = new ReservationService();
 
 router.get('/', (req, res) => {
     const data = reservationService.find();

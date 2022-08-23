@@ -30,8 +30,9 @@ class ReservationService {
     }
 
     find() {
+        console.log(this.reservations);
         return this.reservations;
     }
 }
 
-module.exports = ReservationService;
+module.exports = new ReservationService();
