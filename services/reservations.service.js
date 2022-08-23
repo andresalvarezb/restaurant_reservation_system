@@ -1,6 +1,5 @@
 const { faker } = require('@faker-js/faker');
 const restaurantService = require('./restaurants.service');
-// const restaurantService = new RestaurantServices();
 
 class ReservationService {
     constructor() {

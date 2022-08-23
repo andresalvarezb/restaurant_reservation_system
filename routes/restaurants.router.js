@@ -3,7 +3,6 @@ const router = express.Router();
 
 const isEmptyObject = require('../utils/isEmptyObject');
 const restaurantService = require('../services/restaurants.service');
-// const restaurantService = new RestaurantServices();
 const reservationService = require('../services/reservations.service');
 
 router.post('/', (req, res) => {
