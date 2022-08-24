@@ -11,43 +11,55 @@ router.post('/', (req, res) => {
     res.status(201).json(data);
 });
 
-router.get('/', (req, res) => {
-    if (isEmptyObject(req.query)) {
-        const data = restaurantService.find();
-        res.status(200).json(data);
-    } else {
-        const data = restaurantService.filter(req.query);
-        // if happen a error, this status code should change
-        res.status(200).json(data);
+router.get('/', (req, res, next) => {
+    try {
+        if (isEmptyObject(req.query)) {
+            const data = restaurantService.find();
+            res.json(data);
+        } else {
+            const data = restaurantService.filter(req.query);
+            res.json(data);
+        }
+    } catch (error) {
+        next(error);
     }
 });
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    const { reservation } = req.query;
-    if (reservation) {
-        const data = reservationService.create(id);
-        res.status(200).json(data);
-    } else {
-        const data = restaurantService.findOne(id);
-        res.status(200).json(data);
+router.get('/:id', (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { reservation } = req.query;
+        if (reservation) {
+            const data = reservationService.create(id);
+            res.json(data);
+        } else {
+            const data = restaurantService.findOne(id);
+            res.json(data);
+        }
+    } catch (error) {
+        next(error);
     }
 });
 
-router.patch('/:id', (req, res) => {
-    const { id } = req.params;
-    const body = req.body;
-    const data = restaurantService.update(id, body);
-    if (data.index) {
-        res.status(404).json(data.message);
+router.patch('/:id', (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const body = req.body;
+        const data = restaurantService.update(id, body);
+        res.json(data);
+    } catch (error) {
+        next(error);
     }
-    res.status(200).json(data);
 });
 
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    const data = restaurantService.delete(id);
-    res.status(200).send(`Delete restaurant ${data.name}`);
+router.delete('/:id', (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const data = restaurantService.delete(id);
+        res.send(`Delete restaurant ${data.name}`);
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = router;
