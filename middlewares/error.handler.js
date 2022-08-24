@@ -3,6 +3,14 @@ function logErrors(error, req, res, next) {
     next(error);
 }
 
+function boomErrorHandler(error, req, res, next) {
+    if (error.isBoom) {
+        const { statusCode, payload } = error.output;
+        res.status(statusCode).json(payload);
+    }
+    next(error);
+}
+
 function errorHandler(error, req, res, next) {
     res.status(500).json({
         message: error.message,
@@ -10,4 +18,4 @@ function errorHandler(error, req, res, next) {
     });
 }
 
-module.exports = { logErrors, errorHandler };
+module.exports = { logErrors, errorHandler, boomErrorHandler };

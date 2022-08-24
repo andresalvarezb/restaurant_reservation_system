@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
 class RestaurantServices {
     constructor() {
         this.restaurants = [];
@@ -49,7 +50,13 @@ class RestaurantServices {
     }
 
     findOne(id) {
-        return this.restaurants.find((restaurant) => restaurant.id === id);
+        const restaurant = this.restaurants.find(
+            (restaurant) => restaurant.id === id
+        );
+        if (!restaurant) {
+            throw boom.notFound('Restaurant not found');
+        }
+        return restaurant;
     }
 
     filter(query) {
@@ -69,9 +76,10 @@ class RestaurantServices {
                     return 1;
                 });
         } else {
-            return {
-                message: 'error query unknown',
-            };
+            throw boom.badRequest('Query unknown');
+            // return {
+            //     message: 'error query unknown',
+            // };
         }
     }
 
@@ -80,10 +88,11 @@ class RestaurantServices {
             (restaurant) => restaurant.id === id
         );
         if (index === -1) {
-            return {
-                message: 'Restaurant not found',
-                index,
-            };
+            throw boom.notFound('Restaurant not found');
+            // return {
+            //     message: 'Restaurant not found',
+            //     index,
+            // };
         }
         const restaurant = this.restaurants[index];
         this.restaurants[index] = {
