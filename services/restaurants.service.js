@@ -30,7 +30,6 @@ class RestaurantServices {
          * city
          * url image
          */
-
         this.restaurants.push({
             id: faker.database.mongodbObjectId(),
             ...body,
@@ -77,9 +76,6 @@ class RestaurantServices {
                 });
         } else {
             throw boom.badRequest('Query unknown');
-            // return {
-            //     message: 'error query unknown',
-            // };
         }
     }
 
@@ -89,10 +85,6 @@ class RestaurantServices {
         );
         if (index === -1) {
             throw boom.notFound('Restaurant not found');
-            // return {
-            //     message: 'Restaurant not found',
-            //     index,
-            // };
         }
         const restaurant = this.restaurants[index];
         this.restaurants[index] = {
