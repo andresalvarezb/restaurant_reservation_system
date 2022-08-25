@@ -18,9 +18,7 @@ class ReservationService {
             date: new Date(),
         };
 
-        this.reservations.push(reservation);
-
-        if (this.reservations.length > 20) {
+        if (this.reservations.length > 19) {
             throw boom.notAcceptable(
                 "You can't do more reservations. 20 is the limit for day"
             );
@@ -31,6 +29,7 @@ class ReservationService {
                 "You can't do more reservations. 15 is the limit for day"
             );
         }
+        this.reservations.push(reservation);
         const updateRestaurant = restaurantService.update(id, {
             tables: {
                 available: tablesAvailable - 1,
