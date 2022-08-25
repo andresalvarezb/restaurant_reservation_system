@@ -1,12 +1,12 @@
 const Joi = require('joi');
 
-const id = Joi.string().uuid();
-const name = Joi.string().alphanum();
-const description = Joi.string().alphanum();
+const id = Joi.string().alphanum();
+const name = Joi.string();
+const description = Joi.string();
 const city = Joi.string().alphanum();
 const image = Joi.string().uri();
 const tables = {
-    vailable: Joi.number().integer(),
+    available: Joi.number().integer(),
     reserved: Joi.number().integer(),
 };
 
@@ -18,11 +18,11 @@ const createRestaurantSchema = Joi.object({
 });
 
 const updateRestaurantSchema = Joi.object({
-    name: name.optional(),
-    description: description.optional(),
-    city: city.optional(),
-    image: image.optional(),
-    tables: tables.optional(),
+    name: name,
+    description: description,
+    city: city,
+    image: image,
+    tables: tables,
 });
 
 const getRestaurantSchema = Joi.object({
